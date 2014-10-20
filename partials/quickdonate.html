@@ -5,7 +5,17 @@ Controller: DonationAngCtrl
   <div class="crm-block crm-form-block crmCaseType">
     <!--Price field Block-->
     <fieldset class="priceset-group">
-
+      Select an amount
+      <div ng-hide="hidePriceVal">{{message}}</div>
+      <div>
+	<ul ng-repeat="price in priceListInfo">
+	  <li ng-class="{'amt-active':amountActive(price.amount)}" class="pull-left" ng-click="amountSelected(price.amount)" ng-mouseover="amounthover(price.amount)" style=" list-style: none outside none; margin-right: 10px;" >
+	    {{price.amount}}
+	  </li>
+	</ul>
+      </div>
+      <input ng-model="name" type="text" placeholder="Other amt" />
+      <br><br>
     </fieldset>
     <!--User Information-->
     <fieldset class="user-info-group">
