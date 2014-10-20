@@ -4,3 +4,7 @@
 .ng-dirty.ng-invalid {
   border color: red;
 }
+.pricelist {
+  list-style: none outside none;
+  margin-right: 10px;
+}
