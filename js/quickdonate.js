@@ -57,8 +57,6 @@
     };
   });
 
-
-
   quickDonation.controller('QuickDonationCtrl', function($scope, priceListService) {
     priceListService.getpriceList().then(function(data) {
       $scope.priceListInfo = data;
