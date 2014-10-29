@@ -1,11 +1,17 @@
 describe("Test Donation page", function () {
   var ptor;
-  it ("should redirect to donation page", function() {
+  it ("should save setting of quick configration page", function() {
     ptor = protractor.getInstance();
     ptor.ignoreSynchronization = true;
-    ptor.get(ptor.baseUrl+'civicrm/a/#/donation'); 
+    ptor.get(ptor.baseUrl+'civicrm/quick/donation/configuration');
+    ptor.findElement(protractor.By.id('_qf_QuickDonationSetting_next-bottom')).click();
+    ptor.get(ptor.baseUrl+'user/logout');
+  });
+
+  it ("should redirect to donation page", function() {
+    ptor.get(ptor.baseUrl+'civicrm/quick/#/donation'); 
     ptor.sleep(500);
-    expect(ptor.getCurrentUrl()).toContain('/a/#/donation');
+    expect(ptor.getCurrentUrl()).toContain('/quick/#/donation');
   });
 
   //priceset section test case
