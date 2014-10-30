@@ -18,14 +18,21 @@ exports.config = {
 
   //base URL for drupal
   //eg: baseUrl: 'http://192.168.2.99/drupalTask/',
+
   baseUrl: '',
+  params: {
+    login: {
+      user: '',
+      password: ''
+    }
+  },
 
   //login for site ::https://github.com/angular/protractor/blob/master/spec/withLoginConf.js
   onPrepare: function() {
-    browser.driver.get(baseUrl);
-    //Drupal User Name and Drupal Password
-    browser.driver.findElement(by.id('edit-name')).sendKeys(userName);
-    browser.driver.findElement(by.id('edit-pass')).sendKeys(password);
+    var ptor = protractor.getInstance();
+    browser.driver.get(ptor.baseUrl);
+    browser.driver.findElement(by.id('edit-name')).sendKeys(ptor.params.login.user);
+    browser.driver.findElement(by.id('edit-pass')).sendKeys(ptor.params.login.password);
     browser.driver.findElement(by.id('edit-submit')).click();
   }
 };
