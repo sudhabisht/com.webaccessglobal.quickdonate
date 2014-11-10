@@ -79,6 +79,7 @@
   quickDonation.controller('QuickDonationCtrl', function($scope, formFactory, $route, $location) {
     //set donaiton page ID
     $scope.donationID = CRM.quickdonate.donatePageID;
+    $scope.ziptasticIsEnabled = CRM.quickdonate.ziptasticEnable;
     $scope.thanks = $route.current.params.thanks;
     $scope.currencySymbol = CRM.quickdonate.currency;
     $scope.paymentProcessor = CRM.quickdonate.paymentProcessor;
@@ -88,6 +89,8 @@
     $scope.quickConfig = CRM.quickdonate.isQuickConfig;
     $scope.otherAmount = CRM.quickdonate.otherAmount;
     $scope.test = CRM.quickdonate.isTest;
+    $scope.countryList = CRM.quickdonate.countryList;
+    $scope.stateList = CRM.quickdonate.stateList;
     $scope.section = 1;
 
     //manually binds Parsley--Validation Library to this form.
@@ -635,25 +638,30 @@
     var directive = {
       require: 'ngModel',
       link: function($scope, elm, attrs, ctrl){
-        var duration = 100;
-        var elements = {
-          country: $('#country'),
-          state: $('#state'),
-          city: $('#city')
-        }
-        elements.state.parent().hide();
-        elements.city.parent().hide();
+        if ($scope.ziptasticIsEnabled == 1) {
+          var duration = 100;
+          var elements = {
+            country: $('#country'),
+            state: $('#state'),
+            city: $('#city')
+          }
+          elements.state.parent().hide();
+          elements.city.parent().hide();
 
-        elm.ziptastic().on('zipChange', function(evt, country, state, state_short, city, zip) {
-          // State
-          $('#state').val(state).parent().show(duration);
-          $scope.formInfo.state = state;
-          $('#state').addClass('parsley-success')
-          // City
-          $('#city').val(city).parent().show(duration);
-          $('#city').addClass('parsley-success')
-          $scope.formInfo.city = city;
-        });
+          elm.ziptastic().on('zipChange', function(evt, country, state, state_short, city, zip) {
+            // State
+            $('#state').val(state).parent().show(duration);
+            $scope.formInfo.state = state;
+            $('#state').addClass('parsley-success')
+            // City
+            $('#city').val(city).parent().show(duration);
+            $('#city').addClass('parsley-success')
+            $scope.formInfo.city = city;
+          });
+        }
+        else {
+          $('#state').parent().hide();
+        }
       },
     };
     return directive;

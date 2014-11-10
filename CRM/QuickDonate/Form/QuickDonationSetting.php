@@ -49,7 +49,6 @@ class CRM_QuickDonate_Form_QuickDonationSetting extends CRM_Admin_Form_Setting {
     $domainID = CRM_Core_Config::domainID();
     $settings = civicrm_api3('Setting', 'get', array(
       'domain_id' => $domainID,
-      'return' => "quick_donation_page",
     ));
     $this->_defaults['quickDonation'] = CRM_Utils_Array::value('quick_donation_page', $settings['values'][$domainID]);
     return $this->_defaults;
@@ -65,21 +64,30 @@ class CRM_QuickDonate_Form_QuickDonationSetting extends CRM_Admin_Form_Setting {
     CRM_Utils_System::setTitle(ts('Settings - Enable Quick Donation Form'));
     $quickDonationPage = CRM_Contribute_PseudoConstant::contributionPage();
     $this->addElement('select', 'quickDonation', ts('Donation Form'), array(ts('- Select -')) + $quickDonationPage);
-
+    $this->addElement('checkbox', "ziptastic", ts('Is Default country selected'));
     parent::buildQuickForm();
   }
 
   public function postProcess() {
     $params = $this->controller->exportValues($this->_name);
-    $params = array(
+    $donationParams = array(
       'domain_id' => CRM_Core_Config::domainID(),
       'quick_donation_page' => $params['quickDonation'],
     );
-    $result = civicrm_api3('setting', 'create', $params);
+    $result = civicrm_api3('setting', 'create', $donationParams);
+    if (CRM_Utils_Array::value('is_error', $result, FALSE)) {
+      CRM_Core_Error::debug_var('setting-create result for angular_donation', $result);
+      throw new CRM_Core_Exception('Failed to create settings for angular_donation');
+    }
+
+    $zipParams = array(
+      'domain_id' => CRM_Core_Config::domainID(),
+      'ziptastic_enable' => CRM_Utils_Array::value('ziptastic', $params) ? 1 : 0,
+    );
+    $result = civicrm_api3('setting', 'create', $zipParams);
     if (CRM_Utils_Array::value('is_error', $result, FALSE)) {
       CRM_Core_Error::debug_var('setting-create result for angular_donation', $result);
       throw new CRM_Core_Exception('Failed to create settings for angular_donation');
     }
   }
 }
-
