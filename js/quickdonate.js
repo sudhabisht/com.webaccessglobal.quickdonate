@@ -101,6 +101,10 @@
     $scope.formInfo.email = formFactory.getEmail();
     $scope.formInfo.donateAmount = 0;
 
+    if ($scope.ziptasticIsEnabled == 1) {
+      $('#country').parent().hide();
+      $('#stateList').parent().hide();
+    }
     //get session
     formFactory.getUser(CRM.quickdonate.sessionContact).then(function(resultParams) {
       if (resultParams) {
@@ -118,13 +122,25 @@
           $scope.formInfo.zip = resultParams.postal_code;
           $('#zip').addClass('parsley-success');
           $scope.formInfo.city = resultParams.city;
-          $scope.formInfo.state = $.map(CRM.quickdonate.allStates, function(obj, index) {
-            if(obj == resultParams.state_province_id) {
-              return index;
-            }
-          });
-          $('#state').parent().show();
-          $('#state').addClass('parsley-success');
+
+          if ($scope.ziptasticIsEnabled == 1) {
+            $scope.formInfo.state = $.map(CRM.quickdonate.allStates, function(obj, index) {
+              if(obj == resultParams.state_province_id) {
+                return index;
+              }
+            });
+            $('#state').parent().show();
+            $('#state').addClass('parsley-success');
+            $('#country').parent().hide();
+            $('#stateList').parent().hide();
+          }
+          else {
+            $scope.formInfo.country = resultParams.country_id;
+            $('#country').addClass('parsley-success');
+            $scope.formInfo.stateList = resultParams.state_province_id;
+            $('#stateList').addClass('parsley-success');
+            $('#state').parent().hide();
+          }
           $('#city').parent().show();
           $('#city').addClass('parsley-success');
         }
@@ -317,7 +333,7 @@
       CRM.api3('Address', 'create', {
         'contact_id': contactId,
         'location_type_id': 5,
-        'country_id' : CRM.quickdonate.$defaultContactCountry,
+        'country_id' : $scope.country,
         'street_address': $scope.formInfo.address,
         'city': $scope.formInfo.city,
         'state_province_id': $scope.state,
@@ -333,8 +349,8 @@
 
     $scope.saveData = function() {
       $scope.amount = $scope.formInfo.otherAmount || $scope.formInfo.donateAmount;
-      $scope.state = CRM.quickdonate.allStates[$scope.formInfo.state];
-      $scope.country = CRM.quickdonate.country;
+      $scope.state = $scope.ziptasticIsEnabled == 1 ? CRM.quickdonate.allStates[$scope.formInfo.state] : $scope.formInfo.stateList ;
+      $scope.country = $scope.ziptasticIsEnabled == 1 ? CRM.quickdonate.country : $scope.formInfo.country;
       $scope.names = $scope.formInfo.user.split(' ');
 
       if ($scope.creditType) {
@@ -450,10 +466,10 @@
           //check if all field are valid
           if (scope.quickDonationForm.zip.$valid && scope.quickDonationForm.securityCode.$valid && scope.quickDonationForm.cardExpiry.$valid) {
             $(elm).parent('div').parent('div').removeClass("blockInValid");
-            $(elm).parent('div').parent('div').addClass("ng-valid blockIsValid");
+            $(elm).parent('div').parent('div').addClass("blockIsValid");
           }
           else if ($(elm).parent('div').parent('div').hasClass('blockIsValid')) {
-            $(elm).parent('div').parent('div').removeClass("ng-valid blockIsValid");
+            $(elm).parent('div').parent('div').removeClass("blockIsValid");
             $(elm).parent('div').parent('div').addClass("blockInValid");
             $('.errorBlock').addClass("help-block");
           }

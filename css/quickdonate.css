@@ -1,3 +1,9 @@
+.field-container select {
+    border: 1px solid #ddd !important;
+    border-radius : 8px !important;
+    height: 46px;
+}
+
 #page-title {
     color: #006699;
 }
@@ -9,7 +15,7 @@
 
 #branding {
     background: #006699 !important;
-    background-image: -moz-linear-gradient(center top , #006699 0%, #66cc66 100%);
+    background-image: -moz-linear-gradient(center top , #006699 0%, #66cc66 100%) !important;
 }
 
 .breadcrumb {
@@ -46,11 +52,11 @@ div.add-or-remove-shortcuts {
     box-shadow: none !important;
 }
 
-.field-container input.parsley-success, .ng-scope .ng-valid {
+.ng-scope .blockIsValid, .ng-scope .parsley-success{
     border-color: #089e00 !important;
 }
 
-.field-container input.parsley-error, .ng-invalid .shake, .ng-scope .blockInValid {
+.ng-invalid .shake, .ng-scope .blockInValid, .ng-scope .parsley-error{
     border-color: #b94a48 !important;
 }
 

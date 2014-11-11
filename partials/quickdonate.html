@@ -70,14 +70,14 @@ Controller: QuickDonationCtrl
         <label>ZIP</label>
         <input zip-code-info  data-parsley-type="number" data-parsley-minlength="5" class="form-control" data-parsley-trigger="focusout" ng-model="formInfo.zip" placeholder="15201" id="zip" name="zip" required />
       </div>
-      <div class="form-group field-container col-sm-6" ng-if="ziptasticIsEnabled == 0">
+      <div class="form-group field-container col-sm-6">
         <label>Country</label>
-        <select class="form-control" ng-model="formInfo.country" ng-options="countryId as countryLabel for (countryId,countryLabel) in countryList"><option value=''>Select</option></select>
+        <select id= "country" class="form-control" ng-model="formInfo.country" ng-options="countryId as countryLabel for (countryId,countryLabel) in countryList"><option value=''>Select</option></select>
       </div>
 
-      <div class="form-group field-container col-sm-6" ng-if="ziptasticIsEnabled == 0">
+      <div class="form-group field-container col-sm-6">
         <label>State</label>
-        <select class="form-control" ng-disabled="!formInfo.country" ng-model="formInfo.stateList" ng-options="stateId as stateLabel for (stateId,stateLabel) in stateList[formInfo.country]"><option value=''>Select</option></select>
+        <select id="stateList" class="form-control" ng-disabled="!formInfo.country" ng-model="formInfo.stateList" ng-options="stateId as stateLabel for (stateId,stateLabel) in stateList[formInfo.country]"><option value=''>Select</option></select>
       </div>
 
       <div class="form-group field-container col-sm-6">
@@ -168,6 +168,6 @@ Controller: QuickDonationCtrl
     </fieldset>
     <button type="button" class="donate-sub button" ng-click="sectionShow()" ng-hide="section === 3">NEXT STEP<span class="icon next-icons"></span></button>
     <!-- SUBMIT BUTTON -->
-    <button class="donate-submit-btn" ng-click="saveData()" loading-text="Saving..." enable-button="quickDonationForm.$pristine"  ng-show="selectedSection(3)" > COMPLETE DONATION<span class="icon next-icons"></span></button>
+    <button class="donate-submit-btn" loading-text="Saving..." enable-button="quickDonationForm.$pristine"  ng-show="selectedSection(3)" > COMPLETE DONATION<span class="icon next-icons"></span></button>
   </div>
 </form>
