@@ -162,7 +162,7 @@ describe("Test Donation page", function () {
       ptor.findElement(protractor.By.model('formInfo.cardExpiry')).sendKeys('0820');
       ptor.findElement(protractor.By.model('formInfo.securityCode')).sendKeys('510');
       ptor.findElement(protractor.By.model('formInfo.zipCode')).sendKeys('15425');
-
+      ptor.sleep(500);
       var elementSubmit = ptor.findElement(protractor.By.css('button.donate-submit-btn'));
       elementSubmit.click();
       ptor.sleep(2000);

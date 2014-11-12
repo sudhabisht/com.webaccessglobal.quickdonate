@@ -40,6 +40,10 @@ div.add-or-remove-shortcuts {
     color: #fff !important;
 }
 
+.field-padding {
+    padding-right:30px !important;
+}
+
 .quickDonationForm {
     background: none !important;
     border-top: 1px solid #006699 !important;

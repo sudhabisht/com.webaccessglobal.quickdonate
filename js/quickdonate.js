@@ -101,10 +101,6 @@
     $scope.formInfo.email = formFactory.getEmail();
     $scope.formInfo.donateAmount = 0;
 
-    if ($scope.ziptasticIsEnabled == 1) {
-      $('#country').parent().hide();
-      $('#stateList').parent().hide();
-    }
     //get session
     formFactory.getUser(CRM.quickdonate.sessionContact).then(function(resultParams) {
       if (resultParams) {
@@ -453,6 +449,27 @@
           }, 220);
         }
         $(elm).inputmask({mask: "m/q", placeholder:" ", clearIncomplete: true, oncomplete: expirationComplete, showMaskOnHover: false, overrideFocus: true});
+      }
+    }
+    return directive;
+  });
+
+  quickDonation.directive('getCustomValidate', function() {
+    var directive = {
+      require: 'ngModel',
+      link: function(scope, elm, attrs, ctrl){
+        elm.bind('change', function() {
+          if (elm.attr('id') == 'country') {
+            $('#stateList').removeClass('parsley-success');
+          }
+          if (elm.val()) {
+            elm.removeClass('parsley-error');
+            elm.addClass('parsley-success');
+          }
+          else {
+            elm.addClass('parsley-error');
+          }
+        });
       }
     }
     return directive;

@@ -70,14 +70,16 @@ Controller: QuickDonationCtrl
         <label>ZIP</label>
         <input zip-code-info  data-parsley-type="number" data-parsley-minlength="5" class="form-control" data-parsley-trigger="focusout" ng-model="formInfo.zip" placeholder="15201" id="zip" name="zip" required />
       </div>
-      <div class="form-group field-container col-sm-6">
+      <div class="form-group field-padding field-container col-sm-6" ng-if="ziptasticIsEnabled == 0">
         <label>Country</label>
-        <select id= "country" class="form-control" ng-model="formInfo.country" ng-options="countryId as countryLabel for (countryId,countryLabel) in countryList"><option value=''>Select</option></select>
+        <select get-custom-validate name="country" class="form-control col-sm-6" id="country" data-ng-model="formInfo.country" data-parsley-trigger="focusin focusout" ng-options="countryId as countryLabel for (countryId,countryLabel) in countryList" required><option value=''>--select country--</option></select>
+        <p class="help-block" ng-show="!quickDonationForm.country.$pristine && quickDonationForm.country.$error.required">Please select Country.</p> 
       </div>
 
-      <div class="form-group field-container col-sm-6">
+      <div class="form-group field-padding field-container col-sm-6" ng-if="ziptasticIsEnabled == 0">
         <label>State</label>
-        <select id="stateList" class="form-control" ng-disabled="!formInfo.country" ng-model="formInfo.stateList" ng-options="stateId as stateLabel for (stateId,stateLabel) in stateList[formInfo.country]"><option value=''>Select</option></select>
+        <select get-custom-validate name = 'stateList' class="form-control col-sm-6" id="stateList" ng-disabled="!formInfo.country" ng-model="formInfo.stateList" data-parsley-trigger="focusout" ng-options="stateId as stateLabel for (stateId,stateLabel) in stateList[formInfo.country]" required=""><option value=''>--select state--</option></select>
+        <p class="help-block" ng-show="!quickDonationForm.stateList.$pristine && quickDonationForm.stateList.$error.required && quickDonationForm.country.$valid">Please select State.</p> 
       </div>
 
       <div class="form-group field-container col-sm-6">
