@@ -143,6 +143,13 @@
       }
     });
 
+    $scope.isCreditValid = function() {
+      if ($scope.quickDonationForm.cardNumber.$pristine || $scope.quickDonationForm.cardNumber.$invalid) {
+        $('.cardNumber').parent('div').parent('div').addClass("blockInValid");
+        $('.errorBlock').addClass("help-block");
+      }
+    }
+
     $scope.hidePriceVal = true;
     $scope.amountSelected = function(price) {
       $scope.hidePriceVal = false;
