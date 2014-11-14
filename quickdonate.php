@@ -245,12 +245,8 @@ function quickdonate_civicrm_pageRun(&$page) {
  */
 function quickdonate_getQuickDonateSetting() {
   $settingVal = array();
-  $domainID = CRM_Core_Config::domainID();
-  $settings = civicrm_api3('Setting', 'get', array(
-    'domain_id' => $domainID,
-  ));
-
-  if (CRM_Utils_Array::value('is_error', $settings, FALSE) || empty($settings['values'][$domainID]['quick_donation_page'])) {
+  $donateId = CRM_Core_BAO_Setting::getItem('Quick Donation', 'quick_donation_page');
+  if (empty($donateId)) {
     if (CRM_Core_Permission::check('administer CiviCRM')) {
       CRM_Core_Session::setStatus('Donation form configuration is not done!', ts('Notice'), 'warning');
       CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/quick/donation/configuration'),'reset=1');
@@ -261,8 +257,8 @@ function quickdonate_getQuickDonateSetting() {
     }
   }
   else {
-    $settingVal['donatePageID'] = $settings['values'][$domainID]['quick_donation_page'];
-    $settingVal['ziptasticEnable'] = $settings['values'][$domainID]['ziptastic_enable'];
+    $settingVal['donatePageID'] = $donateId;
+    $settingVal['ziptasticEnable'] = CRM_Core_BAO_Setting::getItem('Quick Donation', 'ziptastic_enable');
   }
   return $settingVal;
 }

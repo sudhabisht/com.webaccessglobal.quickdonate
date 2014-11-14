@@ -143,6 +143,15 @@
       }
     });
 
+    // if ziptastic disable hide and remove validation of country and stateList
+    if ($scope.ziptasticIsEnabled == 1) {
+      $('#country').attr('data-parsley-required', 'false');
+      $('#stateList').attr('data-parsley-required', 'false');
+      $('#country').parent().hide();
+      $('#stateList').parent().hide();
+    }
+
+    //check credit card validation on form submit
     $scope.isCreditValid = function() {
       if ($scope.quickDonationForm.cardNumber.$pristine || $scope.quickDonationForm.cardNumber.$invalid) {
         $('.cardNumber').parent('div').parent('div').addClass("blockInValid");
@@ -461,27 +470,6 @@
     return directive;
   });
 
-  quickDonation.directive('getCustomValidate', function() {
-    var directive = {
-      require: 'ngModel',
-      link: function(scope, elm, attrs, ctrl){
-        elm.bind('change', function() {
-          if (elm.attr('id') == 'country') {
-            $('#stateList').removeClass('parsley-success');
-          }
-          if (elm.val()) {
-            elm.removeClass('parsley-error');
-            elm.addClass('parsley-success');
-          }
-          else {
-            elm.addClass('parsley-error');
-          }
-        });
-      }
-    }
-    return directive;
-  });
-
   quickDonation.directive('validCreditBlock', function() {
     var directive = {
       require: 'ngModel',
@@ -511,6 +499,24 @@
           if (scope.quickDonationForm.securityCode.$valid) {
             $('#zipCode').focus();
 	  }
+        });
+      }
+    }
+    return directive;
+  });
+
+  quickDonation.directive('checkStateValid', function() {
+    var directive = {
+      require: 'ngModel',
+      link: function(scope, elm, attrs, ctrl) {
+        $('#country').bind('change', function() {
+          //remove stateList validation on change of country
+          if (elm.val()) {
+            $('#stateList').addClass("parsley-success");
+          }
+          else {
+            $('#stateList').removeClass("parsley-success");
+          }
         });
       }
     }
